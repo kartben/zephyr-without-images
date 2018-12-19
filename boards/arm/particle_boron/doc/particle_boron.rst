@@ -1,39 +1,42 @@
-.. _particle_argon_nrf52:
+.. _particle_boron:
 
-particle argon nrf52
-####################
+Particle Boron
+##############
 
 Overview
 ********
 
-`particle argon`_ is a WiFi mesh gateway HW platform containing
-an nRF52840 for mesh support and an ESP32 for WiFi.
-The board was developed by Particle Industries and has a SWD connector
-on it for programming.
+The Particle Boron is a cellular-enabled development board with a
+Nordic Semiconductor nRF52840 for mesh support and an LTE or 2G/3G
+modem.  The board was developed by Particle Industries and has a SWD
+connector on it for programming.
 
-It is equipped with a onboard LIPO circuit and conforms with the
+It is equipped with a onboard LIPO circuit and conforms to the
 Adafruit Feather formfactor.
 
-Zephyr applications use the particle argon board configuration
-to run on the particle argon board hardware. It provides
+Zephyr applications use the particle boron board configuration
+to run on the particle boron board hardware. It provides
 support for the Nordic Semiconductor nRF52840 ARM |reg| Cortex |reg|-M4F SoC
 with an integrated 2.4 GHz transceiver supporting Bluetooth |reg| Low Energy
 and IEEE |reg| 802.15.4.
 
-The schematic can be found on the `particle argon website`_.
+For more information about the Particle Boron board:
+
+- `Boron Datasheet`_
+- `Boron Hardware Files`_
 
 Hardware
 ********
 
-On the front of the board are RGB-LED, LED and LIPO circuitru.
+On the front of the board are RGB-LED, LED and LIPO circuitry.
 The RGB-LED is controlled by the nRF52840 via GPIO pins.
 
-.. figure:: img/particle_argon_nrf52.png
-     :width: 442px
+.. figure:: img/boron-top.png
+     :width: 150px
      :align: center
-     :alt: particle argon top
+     :alt: Particle Boron
 
-     particle argon top (Credit: Particle Industries)
+     Particle Boron (Credit: Particle Industries)
 
 Power supply
 ============
@@ -46,7 +49,7 @@ It contains circuitry for LIPO usage and can be charged via the USB port.
 Supported Features
 ==================
 
-The particle_argon_nrf52 board configuration supports the following
+The particle_boron board configuration supports the following
 hardware features:
 
 +-----------+------------+----------------------+
@@ -75,25 +78,55 @@ Other hardware features are not supported by the Zephyr kernel.
 Connections and IOs
 ===================
 
-Please see the `particle argon Website`_ for more information.
+Please see the `Boron Datasheet`_ for header pin assignments, which are
+common to all Feather-compatible Particle boards.  Some peripherals are
+available to applications through DTS overlay include directives:
 
-Adapter LEDs
+- ``mesh_feather_spi_spi3.dtsi`` exposes SPI3 on labeled Feather
+  SPI pins
+- ``mesh_feather_spi1_spi3.dtsi`` exposes SPI3 on labeled Feather
+  SPI1 pins
+- ``mesh_feather_uart1_rtscts.dtsi`` adds hardware flow control to
+  labeled Feather UART pins
+
+LED
+---
+
+* LED0 (blue)
+* LED1 (red)
+* LED2 (green)
+* LED3 (blue)
+
+Push buttons
 ------------
 
-+-------+-----------------------+--------------------------------+
-| Name  | Type                  | Usage                          |
-+=======+=======================+================================+
-| P1,13 | red                   | -                              |
-+-------+-----------------------+--------------------------------+
-| P1,14 | green                 | -                              |
-+-------+-----------------------+--------------------------------+
-| P1,15 | blue                  | -                              |
-+-------+-----------------------+--------------------------------+
+* SW0 via MODE
+* SW1 via RESET
+
+I2C
+---
+
+* TWI0 enabled on labeled header (SDA/SCL)
+* TWI1 enabled for internal power management ICs
+
+SPI
+---
+
+* SPI0 disabled due to TWI0 conflict
+* SPI1 disabled due to TWI1 conflict
+* SPI2 internal to 32 Mb CFI flash chip
+* SPI3 selectable with overlay (SPI or SPI1)
+
+UART
+----
+
+* UARTE0 enabled RX/TX on labeled header (UART1); add RTS/CTS with overlay
+* UARTE1 internal to u-blox cellular modem
 
 Programming and Debugging
 *************************
 
-Applications for the ``particle_argon_nrf52`` board configuration can be
+Applications for the ``particle_boron`` board configuration can be
 built and flashed in the usual way (see :ref:`build_an_application`
 and :ref:`application_run` for more details).
 
@@ -104,7 +137,7 @@ Build and flash an application in the usual way, for example:
 
 .. zephyr-app-commands::
    :zephyr-app: samples/basic/blinky
-   :board: particle_argon_nrf52
+   :board: particle_boron
    :goals: build flash
 
 Debugging
@@ -115,7 +148,7 @@ You can debug an application in the usual way.  Here is an example for the
 
 .. zephyr-app-commands::
    :zephyr-app: samples/hello_world
-   :board: particle_argon_nrf52
+   :board: particle_boron
    :maybe-skip-config:
    :goals: debug
 
@@ -132,5 +165,8 @@ LEDs on the board are working properly with Zephyr:
 You can build and flash the examples to make sure Zephyr is running correctly on
 your board.
 
-.. _particle argon Website:
-   https://github.com/particle-iot/argon
+.. _Boron Datasheet:
+   https://docs.particle.io/datasheets/cellular/boron-datasheet/
+
+.. _Boron Hardware Files:
+   https://github.com/particle-iot/boron

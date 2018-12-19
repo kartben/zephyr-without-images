@@ -1,5 +1,5 @@
-identifier: particle_argon_nrf52
-name: Particle Argon NRF52
+identifier: particle_boron
+name: Particle Boron
 type: mcu
 arch: arm
 ram: 512
